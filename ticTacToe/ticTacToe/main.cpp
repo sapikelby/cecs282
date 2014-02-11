@@ -1,80 +1,68 @@
+/*
+** Programmer: Kelby Sapien
+** Course: CECS 282, CSULB
+** Assignment: Lab 2
+*/
+
 #include <iostream>; 
 #include "TicTacToe.h";
 using namespace std; 
 
-void initializeBoard(char board[3][3]) {
-	
-}
 
 int main(int argc, char* argv[]) {
-	//char gameBoard[3][3]; 
 	int row = 0; 
 	int column = 0; 
-	bool player1 = true;  // player 1 goes first (1)
-	bool player2 = false; // player 2 goes next (-1)
 
-	char gameBoard[3][3] = 
+	// creates 3x3 matrix
+	char board[3][3] = 
 	{ {'0', '0', '0'},
-	  {'0', '0', '0'},	  {'0', '0', '0'}	};
-	/*
-	PrintBoard(gameBoard);
-	GetMove(row, column); 
+	  {'0', '0', '0'},	  {'0', '0', '0'}	};
 
-	cout << row << " " << column << endl;
-	
-	if(MoveIsValid(gameBoard, row, column)) {
-		cout << "Move is valid" << endl; 
-	}
-	else {
-		cout << "That space is taken already" << endl;
-	}
+	bool player1 = true;  // player 1 goes first (1)
+	bool player2 = false; // player 2 goes after (-1)
 
-	*/
+	for (int counter = 0; counter<5; counter++) {
+		// print tic tac toe board
+		PrintBoard(board); 
 
-	for(int counter = 0; counter<10; counter++) {
-		PrintBoard(gameBoard);
-
-		if(player1) {
-			cout << "X's turn: "; //<< endl;	
+		if (player1) {
+			cout << "X's turn: ";	
 			GetMove(row, column);
-			while(!MoveIsValid(gameBoard, row, column)) {
+			
+			while (!MoveIsValid(board, row, column)) {
 				cout << "That space is already taken!" << endl;
 				cout << "X's turn: ";
 				GetMove(row, column);
-				//cout << counter; 
 			}
+			
+			board[row][column] = '1';
 
-			if(MoveIsValid(gameBoard, row, column))
-			{
-				gameBoard[row][column] = '1'; 
-			}
 			player2 = true;
 			player1 = false;
 		}
 
-		PrintBoard(gameBoard);
-
-		if(player2) {
-			cout << "O's turn: "; //<< endl;
+		cout << endl;
+		PrintBoard(board); 
+		
+		if (player2 && counter != 4) {
+			cout << "O's turn: ";
 			GetMove(row, column);
-			while(!MoveIsValid(gameBoard, row, column)) {
+			
+			while (!MoveIsValid(board, row, column)) {
 				cout << "That space is already taken!" << endl;
 				cout << "O's turn: ";
 				GetMove(row, column);
-				//cout << counter;
 			}
-
-			if(MoveIsValid(gameBoard, row, column))
-			{
-				gameBoard[row][column] = '-1'; 
-			}
+			
+			board[row][column] = -1; 
+			
 			player1 = true;
 			player2 = false;
 		}
-
-
+		cout << endl;
 	}
 
+	cout << "Thank you for playing!" << endl;
 	system("pause");
 	return 0; 
 }
