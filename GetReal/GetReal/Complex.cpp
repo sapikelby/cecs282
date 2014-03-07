@@ -4,15 +4,13 @@
 #include <sstream>
 #include <string>
 Complex::Complex() : real(0), imaginary(0) {
-	std::cout << "Default constructor " << ToString();
+	std::cout << "Default constructor: " << std::endl;
 }
 Complex::Complex(double r, double i) :  real(r), imaginary(i) {
-	std::cout << "Imaginary number: " << ToString();
 }
 
-
 // accessor and mutators
-double Complex::GetReal() {
+double Complex::GetReal() const {
 	return real;
 }
 
@@ -20,7 +18,7 @@ void Complex::SetReal(double r) {
 	real = r;
 }
 
-double Complex::GetImaginary() {
+double Complex::GetImaginary() const {
 	return imaginary;
 }
 
@@ -37,22 +35,17 @@ bool Complex::isEquals(const Complex &other) const {
 	
 }
 std::string Complex::ToString() const {
-	std::string sign = (imaginary > 0) ? "+" : "-";
+	std::string sign = (imaginary >= 0) ? "+" : "";
 	std::ostringstream format; 
-	format << real << " " << sign << " " << imaginary << "i";
+	format << real << sign << imaginary << "i";
 	return format.str();
 }
 Complex Complex::Conjugate() const {
-	//double iTemp; 
-	//iTemp = imaginary;
-	//Complex conjugate; 
-	Complex conjugate = Complex(real, -imaginary);
-	return conjugate;
+	return Complex(real, -1 * imaginary);
 }
+
 Complex Complex::Multiply(const Complex &other) const {
-	int a = 0; 
-	int b = 0;
-	a = real * other.real - imaginary * other.imaginary;
-	b = real * other.real + imaginary * other.imaginary;
+	int a = real * other.real - imaginary * other.imaginary;
+	int b = real * other.imaginary + imaginary * other.real;
 	return Complex(a, b);
 }
