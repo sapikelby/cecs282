@@ -1,10 +1,8 @@
 #include <iostream>
 #include "Complex.h"
 
-#include <iostream>
 #include <sstream>
 #include <string>
-//using namespace std;
 Complex::Complex() : real(0), imaginary(0) {
 	std::cout << "Default constructor " << ToString();
 }
@@ -17,6 +15,7 @@ Complex::Complex(double r, double i) :  real(r), imaginary(i) {
 double Complex::GetReal() {
 	return real;
 }
+
 void Complex::SetReal(double r) {
 	real = r;
 }
@@ -24,6 +23,7 @@ void Complex::SetReal(double r) {
 double Complex::GetImaginary() {
 	return imaginary;
 }
+
 void Complex::SetImaginary(double i) {
 	imaginary = i;
 }
@@ -40,6 +40,7 @@ std::string Complex::ToString() const {
 	std::string sign = (imaginary > 0) ? "+" : "-";
 	std::ostringstream format; 
 	format << real << " " << sign << " " << imaginary << "i";
+	return format.str();
 }
 Complex Complex::Conjugate() const {
 	//double iTemp; 
@@ -49,5 +50,9 @@ Complex Complex::Conjugate() const {
 	return conjugate;
 }
 Complex Complex::Multiply(const Complex &other) const {
-
+	int a = 0; 
+	int b = 0;
+	a = real * other.real - imaginary * other.imaginary;
+	b = real * other.real + imaginary * other.imaginary;
+	return Complex(a, b);
 }

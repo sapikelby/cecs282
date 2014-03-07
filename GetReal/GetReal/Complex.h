@@ -26,7 +26,7 @@ public:
 	Complex Conjugate() const;
 	Complex Multiply(const Complex &other) const;
 
-}
+};
 
 
 #endif
