@@ -76,11 +76,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\GetReal\GetReal\Complex.cpp" />
-    <ClCompile Include="..\..\GetReal\GetReal\main.cpp" />
+    <ClCompile Include="Complex.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\GetReal\GetReal\Complex.h" />
+    <ClInclude Include="Complex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
