@@ -3,10 +3,38 @@
 
 #include <sstream>
 #include <string>
+// constructors and destructors
 Complex::Complex() : real(0), imaginary(0) {
-	std::cout << "Default constructor: " << std::endl;
+	std::cout << "Default constructor: " << ToString() << std::endl;
 }
 Complex::Complex(double r, double i) :  real(r), imaginary(i) {
+	std::cout << "Construct: " << ToString() << std::endl;
+}
+Complex::~Complex()
+{
+	std::cout << "Destruct: " << ToString() << std::endl;
+}
+
+// copies other's data onto *this object
+// remember that when this happens, the new object created will not change
+// "other" object when its data is changed
+Complex::Complex(const Complex &other)  
+{
+	real = other.real;
+	imaginary = other.imaginary;
+	std::cout << "Copy construct: " << std::endl;
+}
+
+
+// overloading 
+Complex Complex::operator=(const Complex &other)
+{
+	std::cout << "Operator (Before) = " << ToString();
+	real = other.real;
+	imaginary = other.imaginary;
+	
+	std::cout << "Operator (After) = " << ToString();
+	return *this;
 }
 
 // accessor and mutators
@@ -15,7 +43,9 @@ double Complex::GetReal() const {
 }
 
 void Complex::SetReal(double r) {
+	std::cout << "Mutate " << ToString() << " to ";
 	real = r;
+	std::cout << ToString() << std::endl;
 }
 
 double Complex::GetImaginary() const {
@@ -23,14 +53,23 @@ double Complex::GetImaginary() const {
 }
 
 void Complex::SetImaginary(double i) {
+	std::cout << "Mutate " << ToString() << " to ";
 	imaginary = i;
+	std:: cout << ToString() << std::endl;
 }
 
 // methods
-double Complex::AbsoluteValue() const {
+// same as abs val... added for specs purposes
+double Complex::Magnitude() const {
+	std::cout << "Absolute value" << std::endl;
 	return (sqrt(real * real + imaginary * imaginary));
 }
-bool Complex::isEquals(const Complex &other) const {
+
+double Complex::AbsoluteValue() const {
+	std::cout << "Absolute value" << std::endl;
+	return (sqrt(real * real + imaginary * imaginary));
+}
+bool Complex::Equals(const Complex &other) const {
 	return (real == other.real && imaginary == other.imaginary) ? true : false;
 	
 }
@@ -41,10 +80,12 @@ std::string Complex::ToString() const {
 	return format.str();
 }
 Complex Complex::GetConjugate() const {
+	std::cout << "Get Conjugate" << std::endl;
 	return Complex(real, -1 * imaginary);
 }
 
 Complex Complex::Multiply(const Complex &other) const {
+	std::cout << "Multiply" << std::endl;
 	int a = real * other.real - imaginary * other.imaginary;
 	int b = real * other.imaginary + imaginary * other.real;
 	return Complex(a, b);
