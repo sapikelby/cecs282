@@ -32,7 +32,6 @@ int main() {
    Complex c3(-3, -4);
    CompareComplex(c3, copy1);
    cout << endl;
-   system("pause");
 }
 
 void CompareComplex(Complex first, const Complex& second) {

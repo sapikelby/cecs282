@@ -28,7 +28,7 @@ Complex::Complex(const Complex &other)
 
 
 // overloading 
-Complex Complex::operator=(const Complex &other)
+Complex& Complex::operator=(const Complex &other)
 {
 	std::cout << "Operator = " << ToString();
 	real = other.real;

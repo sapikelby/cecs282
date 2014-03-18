@@ -14,7 +14,7 @@ public:
 	~Complex(); // destructor
 	
 	// overloading operators
-	Complex operator=(const Complex &other);
+	Complex& operator=(const Complex &other);
 
 	// accessor and mutators
 	double GetReal() const; 
