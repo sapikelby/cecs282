@@ -3,6 +3,7 @@
 
 #include <sstream>
 #include <string>
+
 // constructors and destructors
 Complex::Complex() : real(0), imaginary(0) {
 	std::cout << "Default constructor: " << ToString() << std::endl;
@@ -22,18 +23,18 @@ Complex::Complex(const Complex &other)
 {
 	real = other.real;
 	imaginary = other.imaginary;
-	std::cout << "Copy construct: " << std::endl;
+	std::cout << "Copy construct: " << ToString() << std::endl;
 }
 
 
 // overloading 
 Complex Complex::operator=(const Complex &other)
 {
-	std::cout << "Operator (Before) = " << ToString();
+	std::cout << "Operator = " << ToString();
 	real = other.real;
 	imaginary = other.imaginary;
 	
-	std::cout << "Operator (After) = " << ToString();
+	std::cout << " ==> " << ToString() << std::endl;
 	return *this;
 }
 
@@ -80,7 +81,7 @@ std::string Complex::ToString() const {
 	return format.str();
 }
 Complex Complex::GetConjugate() const {
-	std::cout << "Get Conjugate" << std::endl;
+	std::cout << "Conjugate" << std::endl;
 	return Complex(real, -1 * imaginary);
 }
 
