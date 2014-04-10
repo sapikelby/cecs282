@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <algorithm>    // std::sort
+#include <vector>       // std::vector
 using namespace std;
 
 OthelloBoard::OthelloBoard() : mNextPlayer(1), mValue(0), mPassCount(0), 
@@ -13,7 +15,7 @@ OthelloBoard::OthelloBoard() : mNextPlayer(1), mValue(0), mPassCount(0),
 			}
 		}
 
-		mBoard[MIDDLE][MIDDLE] = -1; // 3, 3
+		mBoard[MIDDLE][MIDDLE] = -1; // (3, 3)
 		mBoard[MIDDLE][MIDDLE + 1] = 1; 
 		mBoard[MIDDLE + 1][MIDDLE] = 1; 
 		mBoard[MIDDLE + 1][MIDDLE + 1] = -1; 
@@ -31,14 +33,30 @@ void OthelloBoard :: GetPossibleMoves(std::vector<OthelloMove *> *list) const {
 					for (int cd = -1; cd <=1; cd++) {
 						bool valid = true; 
 						int newR = row, newC = col, eCount = 0;
-						while (valid) {
+						while (valid && InBounds(newR, newC)) {
 							//cout << "still in loop " << "row: " << row << "col: " << col << endl;
 							newR = newR + rd; 
 							newC = newC + cd;
 							if (mBoard[newR][newC] == 0) { // empty square, stop and add possible values
-								
+
 								if (eCount > 0) { // set valid = false to add moves
-									valid = false;
+									//valid = false;
+									OthelloMove* move = CreateMove();
+									*move = OthelloMove(newR,newC);
+									bool existAlready = false;
+									for(OthelloMove* i : *list) {
+										if (*i == *move) {
+											existAlready = true;
+										}
+									}
+									if (existAlready) {
+										delete(move);
+									}
+									else {
+										list->push_back(move);
+										//list->insert(move);
+										//sort(list->begin(), list->end());
+									}
 								}
 								else { 
 									eCount = 0;
@@ -49,7 +67,6 @@ void OthelloBoard :: GetPossibleMoves(std::vector<OthelloMove *> *list) const {
 								eCount++;
 							}
 							else { // found same piece as player's
-								eCount = 0; 
 								break;
 
 							}
@@ -61,6 +78,7 @@ void OthelloBoard :: GetPossibleMoves(std::vector<OthelloMove *> *list) const {
 						board[newR -= rd][newC -= cd] = board[row][column];
 						}
 						*/
+						/*
 						if(!valid) {
 							//cout << "inside adding" << endl;
 							OthelloMove* move = CreateMove();
@@ -78,6 +96,7 @@ void OthelloBoard :: GetPossibleMoves(std::vector<OthelloMove *> *list) const {
 								list->push_back(move);
 							}
 						}
+						*/
 					}
 				}
 			}
@@ -90,9 +109,9 @@ void OthelloBoard :: GetPossibleMoves(std::vector<OthelloMove *> *list) const {
 };
 
 void OthelloBoard::ApplyMove(OthelloMove *move) {
-	// mPassCount 
-	// mValue
-	// mNextPlayer
+	// mPassCount -- updated
+	// mValue  -- updated
+	// mNextPlayer -- updated
 
 	char player = (mNextPlayer == 1) ? 1 : -1;
 
@@ -158,13 +177,17 @@ void OthelloBoard::ApplyMove(OthelloMove *move) {
 };
 
 void OthelloBoard::UndoLastMove() {
-	// mPassCount 
-	// mValue
-	// mNextPlayer
+	// mPassCount -- updateds
+	// mValue -- updated
+	// mNextPlayer -- updated
 
 	//OthelloMove* move;
 	if(GetMoveCount() > 0) {
 		OthelloMove* move = mHistory.back();
+
+		if(move->IsPass()) {
+			mPassCount--;
+		}
 
 		//move->mFlips.begin();
 		int flipSize = move->mFlips.size();

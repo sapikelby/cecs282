@@ -4,6 +4,8 @@
 #include <sstream>
 using namespace std;
 
+int OthelloMove::mOutstanding = 0;
+
 OthelloMove::OthelloMove() : mRow(-1), mCol(-1) {
 	//mRow = -1; 
 	//mCol = -1; 

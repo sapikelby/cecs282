@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream> 
 
 // outstanding moves should equal the number of moves on the board
 
@@ -50,6 +51,20 @@ private:
 	void AddFlipSet(FlipSet set) {mFlips.push_back(set);}
 
 public:
+	static int mOutstanding;
+
+	static void* operator new(std::size_t sz) {
+		mOutstanding++;
+		std::cout << "operator new: " << mOutstanding << " moves outstanding" << std::endl;
+		return ::operator new(sz);
+	}
+
+	static void operator delete(void* ptr, std::size_t sz) {
+		mOutstanding--;
+		std::cout << "operator delete: " << mOutstanding << " moves oustanding" << std::endl;
+		::operator delete(ptr);
+	}
+
 	// ADD: a copy constructor
 	OthelloMove(const OthelloMove& move);
 	// ADD: an assignment operator taking a const OthelloMove& object.
