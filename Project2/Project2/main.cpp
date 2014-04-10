@@ -54,23 +54,52 @@ int main(int argc, char* argv[]) {
 		for (int i = 0; i < possMoves.size(); i++) {
 			OthelloMove itr = *possMoves.at(i);
 			cout << (string)itr << endl;
+			//delete(&possMoves.at(i));
+			
 		}
-
-		cout <<	possMoves.size() << endl;
 		
-		board.ApplyMove(possMoves.at(0));
-		board.ApplyMove(possMoves.at(1));
+		//delete(&possMoves);
 
+		//cout <<	possMoves.size() << endl;
+		
+		cout << "Applied move " << possMoves.at(0) << endl;
+		board.ApplyMove(possMoves.at(0));
+
+		cout << "value: " << board.GetValue() << endl; 
+		//possMoves.clear();
+		cout << v;
+		/*
+		cout << "Possible moves:" << endl;
+		board.GetPossibleMoves(&possMoves);
+
+		for (int i = 0; i < possMoves.size(); i++) {
+			OthelloMove itr = *possMoves.at(i);
+			cout << (string)itr << endl;
+		}
+		cout << ((board.GetNextPlayer() == 1) ? "Black's " : "White's ") 
+       << "turn \n";
+		cout << v;
+		cout << "Applied move " << possMoves.at(1) << endl;
+		board.ApplyMove(possMoves.at(4));
 		cout << v;
 
 		cout << "value: " << board.GetValue() << endl; 
 
-		cout << ((board.GetNextPlayer() == 1) ? "Black's " : "White's ") 
-       << "turn \n";
+		
 
 
 		cout << endl;
 
+		*/
+
+
+		board.UndoLastMove();
+
+		cout << v;
+
+		cout << endl << board.GetValue();
+
+		/*
 		const vector<OthelloMove*> *history = board.GetMoveHistory();
 
 		int count = 0;
@@ -79,8 +108,6 @@ int main(int argc, char* argv[]) {
 			itr++) { // doesn't even fit on one line :(
 				cout << "history (" << count++ << ")" << (string)**itr << endl;
 		}
-
-
 		// memory management 
 		// delete from heap, then clear vector using clear function
 

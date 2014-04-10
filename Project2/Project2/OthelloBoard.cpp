@@ -62,7 +62,7 @@ void OthelloBoard :: GetPossibleMoves(std::vector<OthelloMove *> *list) const {
 						}
 						*/
 						if(!valid) {
-							cout << "inside adding" << endl;
+							//cout << "inside adding" << endl;
 							OthelloMove* move = CreateMove();
 							*move = OthelloMove(newR,newC);
 							bool existAlready = false;
@@ -168,13 +168,13 @@ void OthelloBoard::UndoLastMove() {
 
 		//move->mFlips.begin();
 		int flipSize = move->mFlips.size();
-		char newR = move->mRow, newC = move->mCol;
+		
 		for(int i=0; i<flipSize; i++) {
-			
-			char numSwitched = move->mFlips.back().switched; 
-			char rd = move->mFlips.back().rowDelta, cd = move->mFlips.back().colDelta;
+			int newR = move->mRow, newC = move->mCol;
+			int numSwitched = move->mFlips.back().switched; 
+			int rd = move->mFlips.back().rowDelta, cd = move->mFlips.back().colDelta;
 
-			for(int ii=0; i<numSwitched; ii++) {
+			for(int ii=0; ii<numSwitched; ii++) {
 				cout << "undoing moved pieces" << endl;
 				mBoard[newR += rd][newC += cd] *= -1;  // flip value by multiplying by -1
 			}
@@ -182,10 +182,11 @@ void OthelloBoard::UndoLastMove() {
 			move->mFlips.pop_back(); // get rid of last flip 
 		}
 
-		mBoard[newR][newC] = 0; // set board piece to empty
+		mBoard[move->mRow][move->mCol] = 0; // set board piece to empty
 
-		mHistory.pop_back(); // delete history move
-		delete mHistory.back();
+		// first delete from heap and then from vector
+		delete(mHistory.back());
+		mHistory.pop_back(); // delete move from history
 		mNextPlayer = -mNextPlayer;
 	}
 
