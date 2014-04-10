@@ -31,13 +31,19 @@ void OthelloBoard :: GetPossibleMoves(std::vector<OthelloMove *> *list) const {
 			if(mBoard[row][col] == player) {
 				for (int rd = -1; rd <=1; rd++) {
 					for (int cd = -1; cd <=1; cd++) {
-						bool valid = true; 
+						//bool valid = true; 
+						//bool sameRow = true; //
 						int newR = row, newC = col, eCount = 0;
-						while (valid && InBounds(newR, newC)) {
+						while (InBounds(newR, newC)) {  // &&valid) {
 							//cout << "still in loop " << "row: " << row << "col: " << col << endl;
 							newR = newR + rd; 
 							newC = newC + cd;
+
 							if (mBoard[newR][newC] == 0) { // empty square, stop and add possible values
+								//if(sameRow) {
+								//	newR = newR + rd; 
+								//	newC = newC - cd; // stay within same row
+								//}
 
 								if (eCount > 0) { // set valid = false to add moves
 									//valid = false;
@@ -48,14 +54,14 @@ void OthelloBoard :: GetPossibleMoves(std::vector<OthelloMove *> *list) const {
 										if (*i == *move) {
 											existAlready = true;
 										}
+										//break;
 									}
 									if (existAlready) {
 										delete(move);
 									}
 									else {
+										//sameRow = true;
 										list->push_back(move);
-										//list->insert(move);
-										//sort(list->begin(), list->end());
 									}
 								}
 								else { 
@@ -70,6 +76,7 @@ void OthelloBoard :: GetPossibleMoves(std::vector<OthelloMove *> *list) const {
 								break;
 
 							}
+							//sameRow = false;
 						}
 
 						//cout << "outside while loop" << endl;
@@ -157,7 +164,7 @@ void OthelloBoard::ApplyMove(OthelloMove *move) {
 				}
 
 				for (int i = 0; i < eCount; i++) {// update conquered game pieces
-					cout << "updating pieces" << endl;
+					//cout << "updating pieces" << endl;
 					mBoard[newR -= rd][newC -= cd] = player;
 				}
 
@@ -189,7 +196,7 @@ void OthelloBoard::UndoLastMove() {
 			mPassCount--;
 		}
 
-		//move->mFlips.begin();
+		
 		int flipSize = move->mFlips.size();
 		
 		for(int i=0; i<flipSize; i++) {
@@ -198,7 +205,7 @@ void OthelloBoard::UndoLastMove() {
 			int rd = move->mFlips.back().rowDelta, cd = move->mFlips.back().colDelta;
 
 			for(int ii=0; ii<numSwitched; ii++) {
-				cout << "undoing moved pieces" << endl;
+				//cout << "undoing moved pieces" << endl;
 				mBoard[newR += rd][newC += cd] *= -1;  // flip value by multiplying by -1
 			}
 
