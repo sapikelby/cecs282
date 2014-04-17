@@ -1,11 +1,8 @@
-﻿Build started 4/16/2014 8:37:35 PM.
+﻿Build started 4/17/2014 5:53:42 AM.
      1>Project "C:\Users\Kelby\Documents\GitHub\cecs282\Project2\Project2\Project2.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
-         main.cpp
-     1>c:\users\kelby\documents\github\cecs282\project2\project2\main.cpp(156): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\kelby\documents\github\cecs282\project2\project2\main.cpp(166): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\kelby\documents\github\cecs282\project2\project2\main.cpp(310): warning C4018: '<' : signed/unsigned mismatch
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt OthelloBoard.cpp
+         OthelloBoard.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Kelby\Documents\GitHub\cecs282\Project2\Debug\Project2.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Kelby\Documents\GitHub\cecs282\Project2\Debug\Project2.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Kelby\Documents\GitHub\cecs282\Project2\Debug\Project2.lib" /MACHINE:X86 Debug\main.obj
          Debug\OthelloBoard.obj
@@ -16,4 +13,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.43
+Time Elapsed 00:00:02.02
