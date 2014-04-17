@@ -6,14 +6,12 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
 
-	//fix: possMoves display
-	//		corner conquering
-	//		getPossibleMoves vector ... done
 
 	cout << "--- Othello Game ---" << endl << endl;
 
@@ -53,9 +51,9 @@ int main(int argc, char* argv[]) {
 	board.GetPossibleMoves(&possMoves);
 
 	for (int i = 0; i < possMoves.size(); i++) {
-		OthelloMove itr = *possMoves.at(i);
-		cout << (string)itr << endl;
-		//delete(&possMoves.at(i));
+	OthelloMove itr = *possMoves.at(i);
+	cout << (string)itr << endl;
+	//delete(&possMoves.at(i));
 
 	}
 
@@ -89,7 +87,7 @@ int main(int argc, char* argv[]) {
 
 	cout << endl;
 
-	
+
 
 
 	board.UndoLastMove();
@@ -107,14 +105,14 @@ int main(int argc, char* argv[]) {
 	int count = 0;
 	// use a reverse iterator
 	for (vector<OthelloMove*>::const_reverse_iterator itr = history->rbegin(); itr != history->rend();
-		itr++) { // doesn't even fit on one line :(
-			cout << "inside iterator" << endl;
-			cout << "history (" << count++ << ")" << (string)**itr << endl;
+	itr++) { // doesn't even fit on one line :(
+	cout << "inside iterator" << endl;
+	cout << "history (" << count++ << ")" << (string)**itr << endl;
 	}
 
 
 	cout << "After history" << endl;
-	
+
 	const vector<OthelloMove*> *history = board.GetMoveHistory();
 
 	int count = 0;
@@ -131,162 +129,190 @@ int main(int argc, char* argv[]) {
 
 
 	// Initialization
-   OthelloBoard board; // the state of the game board
-   OthelloView v(&board); // a View for outputting the board via operator<<
-   string userInput; // a string to hold the user's command choice
-   vector<OthelloMove *> possMoves; // a holder for possible moves
-   string temp;
-
-   //int i= 0;
-   // Main loop
-   do {
-	   // Print the game board using the OthelloView object
-	   cout << v;
-
-	   cout << (board.GetNextPlayer() == 1 ? "Black's turn: " : "White's turn") 
-		   << endl;
-	   // Print all possible moves
-	   board.GetPossibleMoves(&possMoves);
-	   for (int i = 0; i < possMoves.size(); i++) {
-		   OthelloMove itr = *possMoves.at(i);
-		   cout << (string)itr << " ";
-	   }
-	   cout << endl;
-	   
-	   // Ask to input a command
-	   cout << "Enter a command: " << endl;
-	   getline(cin, userInput);
-	   try {
-
-		   OthelloException exc("Invalid move");
-		   bool validMove = false;
-		   if (userInput.find("move") != string::npos) {
-			   temp = userInput.substr(5,5);
-			   //cout << temp << endl;
-			   OthelloMove *move = board.CreateMove();
-			   *move = temp;  // overloading =
-			   //cout << (string)*move << endl;
-
-			   try {
-				   /*
-				   if (move->IsPass()) { // only allow to pass when no moves available
-				   //cout << "pass" << endl;
-				   if (possMoves.empty()) {
-				   cout << (string)*move << endl;
-				   board.ApplyMove(move);
-				   validMove = true;
-				   }
-				   }
-				   */
-
-				   //cout << "in else" << endl;
-				   for (OthelloMove* i : possMoves) { // "for each int called 'i' inside intList, do this"
-					   cout << (string)*i << " ";
-					   //cout << "possible move" << endl;
-					   if(*i == *move) {
-						   //cout << "valid move" << endl;
-						   board.ApplyMove(move);
-						   validMove = true;
-					   }
-				   }
-
-				   //cout << "size: " << possMoves.size() << endl;
-
-				   if(!validMove) {
-						   cout << "throws exception" << endl;
-						   throw exc;
-					   }
-
-				   /*
-				   for (int i = 0; i < possMoves.size(); i++) {
-					   
-					   OthelloMove itr = *possMoves.at(i);
-					   if(itr == *move) {
-						   //cout << "valid move" << endl;
-						   board.ApplyMove(move);
-						   validMove = true;
-					   }
+	OthelloBoard board; // the state of the game board
+	OthelloView v(&board); // a View for outputting the board via operator<<
+	string userInput; // a string to hold the user's command choice
+	vector<OthelloMove *> possMoves; // a holder for possible moves
+	string temp;
 
 
-					   if(!validMove) {
-						   cout << "throws exception" << endl;
-						   throw exc;
-					   }
+	//
+	vector<string> possStrings;
 
-				   }
-				   */
-			   }
+	//sort(possMoves.begin(), possMoves.end());
 
-			   catch (OthelloException &exc) {
-				   cout << exc.GetMessage() << endl;
-				   delete(move); // delete invalid move
-			   }
-		   }
+	//int i= 0;
+	// Main loop
+	do {
+		// Print the game board using the OthelloView object
+		cout << v;
 
-		   else if (userInput.find("undo") != string::npos) {
-			   temp = userInput.substr(5,6);
-			   int numUndos = stoi(temp);
-			   cout << numUndos << endl;
+		cout << (board.GetNextPlayer() == 1 ? "Black's turn: " : "White's turn:") 
+			<< endl;
+		// Print all possible moves
+		board.GetPossibleMoves(&possMoves);
 
-			   while (numUndos > 0)
-			   {
-				   board.UndoLastMove();
-				   numUndos--;
-				   //cout << numUndos;
 
-			   }
-		   }
+		for (int i = 0; i < possMoves.size(); i++) {
+			OthelloMove itr = *possMoves.at(i);
+			//cout << (string)itr << " ";
+			possStrings.push_back(string(itr));  // pushes string rep. of move onto string vector
+		}
 
-		   else if (userInput.find("showValue") != string::npos) {
-			   cout << "Board value: " << board.GetValue() << endl;
-		   }
+		cout << endl << endl;
 
-		   else if (userInput.find("showHistory") != string::npos) {
-			   const vector<OthelloMove*> *history = board.GetMoveHistory();
-			   int player = -board.GetNextPlayer();
+		sort(possStrings.begin(), possStrings.end());
 
-			   for (vector<OthelloMove*>::const_reverse_iterator itr = 
-				   history->rbegin(); itr != history->rend(); itr++) {
-					   cout << (player == 1 ? "Black's turn: ":"White's turn: ") 
-						   << string(**itr) << endl;
-					   player = -player;
-			   }
+		for (int i = 0; i < possStrings.size(); i++) {
+			string itr = possStrings.at(i);
+			cout << itr << " ";
+		}
 
-		   }
+		cout << endl << endl;
 
-		   else if (userInput.find("quit") != string::npos) {
-			   break;
-		   }
+		// Ask to input a command
+		cout << "Enter a command: " << endl;
+		getline(cin, userInput);
 
-		   else {
-			   throw OthelloException("Invalid command, try again");
-		   }
-	   }
+		try {
 
-	   catch (OthelloException &exc) {
-		   cout << exc.GetMessage() << endl;
-		   //delete(move);
-	   }
+			OthelloException exc("Invalid move");
+			bool validMove = false;
 
-	   
-	   // finally, delete from heap and clear possMoves
-	   for (int i = 0; i < possMoves.size(); i++) {
-		   OthelloMove* ptr = possMoves.at(i);
-		   delete(ptr);
-	   }
 
-	   possMoves.clear();
+			// Command loop
 
-	   
-	   // Command loop:
-	   // move (r,c)
-	   // undo n
-	   // showValue
-	   // showHistory
-	   // quit
-   } while(!board.IsFinished());
+			// move (r,c)
+			if (userInput.find("move") != string::npos) {
+				istringstream moveInput(userInput);
 
-    cout << ((board.GetValue() == 0) ? "Tied game" : 
-	   (board.GetValue() > 0) ? "Black wins!" : "White wins!") << endl;
-   
+				moveInput >> temp >> temp;
+
+				//temp = userInput.substr(5,8);
+				//cout << temp << endl;
+				OthelloMove *move = board.CreateMove();
+				*move = temp;  // overloading =
+
+
+				char tempChar; // comma and parantheses in move
+
+				istringstream getMove(temp);
+				int row = 0, col = 0;
+				getMove >> tempChar >> row >> tempChar >> col >> tempChar;
+				//cout << row << "," << col << endl;
+
+				//cout << "Move: " << (string)*move << endl;
+				// check for inbounds 
+				//move (3,2)
+				//int row = stoi(userInput.substr(6,1));
+				//int col = stoi(userInput.substr(8,1));
+				//char tempVar;
+				//cout << row << "," << col << endl;
+
+				try {
+					/*
+					if (move->IsPass()) { // only allow to pass when no moves available
+					//cout << "pass" << endl;
+					if (possMoves.empty()) {
+					cout << (string)*move << endl;
+					board.ApplyMove(move);
+					validMove = true;
+					}
+					}
+					*/
+					if (board.InBounds(row, col) || move->IsPass()) {
+						//cout << "if" << endl;
+						for (OthelloMove* i : possMoves) { // "for each int called 'i' inside intList, do this"
+							cout << (string)*i << " ";
+							//cout << "possible move" << endl;
+							if(*i == *move) {
+								//cout << "valid move" << endl;
+								board.ApplyMove(move);
+								validMove = true;
+							}
+						}
+
+
+						if(!validMove) {
+							//cout << "throws exception" << endl;
+							throw exc;
+						}
+
+
+					}
+					else {
+						throw exc; 
+					}
+				}
+
+				catch (OthelloException &exc) {
+					cout << exc.GetMessage() << endl << endl;
+					delete(move); // delete invalid move
+				}
+			}
+
+			// undo n
+			else if (userInput.find("undo") != string::npos) {
+				int numUndos = 0;
+				istringstream input(userInput);
+
+				// "undo 130" == userInput
+				input >> temp >> numUndos;
+
+				while (numUndos > 0)
+				{
+					board.UndoLastMove();
+					numUndos--;
+				}
+			}
+
+			// showValue
+			else if (userInput.find("showValue") != string::npos) {
+				cout << "Board value: " << board.GetValue() << endl;
+			}
+
+			// showHistory
+			else if (userInput.find("showHistory") != string::npos) {
+				const vector<OthelloMove*> *history = board.GetMoveHistory();
+				int player = -board.GetNextPlayer();
+
+				for (vector<OthelloMove*>::const_reverse_iterator itr = 
+					history->rbegin(); itr != history->rend(); itr++) {
+						cout << (player == 1 ? "Black's turn: ":"White's turn: ") 
+							<< string(**itr) << endl;
+						player = -player;
+				}
+
+			}
+
+			// quit
+			else if (userInput.find("quit") != string::npos) {
+				break;
+			}
+
+			else {
+				throw OthelloException("Invalid command, try again");
+			}
+		}
+
+		catch (OthelloException &exc) {
+			cout << exc.GetMessage() << endl;
+		}
+
+
+		// finally, delete from heap and clear possMoves
+		for (int i = 0; i < possMoves.size(); i++) {
+			OthelloMove* ptr = possMoves.at(i);
+			delete(ptr);
+		}
+
+		possMoves.clear();
+		possStrings.clear();
+
+
+	} while (!board.IsFinished());
+
+	cout << ((board.GetValue() == 0) ? "Tied game" : 
+		(board.GetValue() > 0) ? "Black wins!" : "White wins!") << endl;
+
 }

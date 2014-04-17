@@ -7,26 +7,19 @@ using namespace std;
 int OthelloMove::mOutstanding = 0;
 
 OthelloMove::OthelloMove() : mRow(-1), mCol(-1) {
-	//mRow = -1; 
-	//mCol = -1; 
-	//cout << "Constructed move" << endl;
 };
 
 OthelloMove::OthelloMove(int row, int col) : mRow(row), mCol(col) {
-	//mRow = row; 
-	//mCol = col;
-	//cout << "constructed move with parameters" << endl;
 };
 
 OthelloMove::OthelloMove(const OthelloMove& move) : mRow(move.mRow), 
 	mCol(move.mCol) {
-		//cout << "copy constructed move";
 };
-	
+
 OthelloMove& OthelloMove::operator=(const string& strMove) {
 	istringstream is(strMove); 
 	char temp;
-	if(strMove.compare("pass") == 0) {
+	if (strMove.compare("pass") == 0) {
 		mRow = -1; 
 		mCol = -1;
 	}
@@ -36,14 +29,14 @@ OthelloMove& OthelloMove::operator=(const string& strMove) {
 	return *this;
 
 };
+
 // ADD: an assignment operator taking a const OthelloMove& object.
 OthelloMove& OthelloMove::operator=(const OthelloMove& otherMove)
 {
-	if(this == &otherMove) {
+	if (this == &otherMove) {
 		return *this;
 	}
-	
-	//cout << "Operator ="; 
+
 	mRow = otherMove.mRow; 
 	mCol = otherMove.mCol; 
 	return *this;

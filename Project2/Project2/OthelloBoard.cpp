@@ -31,8 +31,7 @@ void OthelloBoard :: GetPossibleMoves(std::vector<OthelloMove *> *list) const {
 			if(mBoard[row][col] == player) {
 				for (int rd = -1; rd <=1; rd++) {
 					for (int cd = -1; cd <=1; cd++) {
-						//bool valid = true; 
-						//bool sameRow = true; //
+
 						int newR = row, newC = col, eCount = 0;
 						while (InBounds(newR, newC)) {  // &&valid) {
 							//cout << "still in loop " << "row: " << row << "col: " << col << endl;
@@ -40,10 +39,7 @@ void OthelloBoard :: GetPossibleMoves(std::vector<OthelloMove *> *list) const {
 							newC = newC + cd;
 
 							if (mBoard[newR][newC] == 0) { // empty square, stop and add possible values
-								//if(sameRow) {
-								//	newR = newR + rd; 
-								//	newC = newC - cd; // stay within same row
-								//}
+								
 
 								if (eCount > 0) { // set valid = false to add moves
 									//valid = false;
@@ -76,34 +72,10 @@ void OthelloBoard :: GetPossibleMoves(std::vector<OthelloMove *> *list) const {
 								break;
 
 							}
-							//sameRow = false;
+
 						}
 
-						//cout << "outside while loop" << endl;
-						/*
-						for (int i = 0; i < eCount; i++) {// update conquered game pieces
-						board[newR -= rd][newC -= cd] = board[row][column];
-						}
-						*/
-						/*
-						if(!valid) {
-							//cout << "inside adding" << endl;
-							OthelloMove* move = CreateMove();
-							*move = OthelloMove(newR,newC);
-							bool existAlready = false;
-							for(OthelloMove* i : *list) {
-								if (*i == *move) {
-									existAlready = true;
-								}
-							}
-							if (existAlready) {
-								delete(move);
-							}
-							else {
-								list->push_back(move);
-							}
-						}
-						*/
+						
 					}
 				}
 			}
@@ -130,9 +102,11 @@ void OthelloBoard::ApplyMove(OthelloMove *move) {
 	}
 	
 	// assume valid move, check if it's on the vector list
-	if(move->mRow >= 0 && move->mCol >=0) {
+	//if(move->mRow >= 0 && move->mCol >=0) {
+	else if(!move->IsPass()) {
 		mPassCount = 0; 
 		mBoard[move->mRow][move->mCol] = player;
+		mValue = mValue + player; // update score
 		// add move to mHistory
 		mHistory.push_back(move);
 		for (int rd = -1; rd <=1; rd++) {
@@ -162,24 +136,40 @@ void OthelloBoard::ApplyMove(OthelloMove *move) {
 						break;
 					}
 				}
-
+				
 				for (int i = 0; i < eCount; i++) {// update conquered game pieces
 					//cout << "updating pieces" << endl;
 					mBoard[newR -= rd][newC -= cd] = player;
+					mValue = mValue + player * 2;
+					//cout << "board val: " << mValue << endl;
 				}
+				
+				/*
+				while(eCount > 0) {
+					mBoard[newR -= rd][newC -= cd] = player;
+					eCount--;
+					//mValue = mValue + player * 2;
+					cout << "board val: " << mValue << endl;
+					
+				}
+				*/
 
 			}
 		}
 	}
 
-
+	
 	mNextPlayer = -mNextPlayer; // switch turns
+	
+	/*
 	mValue = 0; // update the value of the board
 	for(int row =0; row<BOARD_SIZE; row++) {
 		for(int col=0; col<BOARD_SIZE; col++) {
 			mValue = mValue + mBoard[row][col];
 		}
 	}
+	*/
+	
 
 };
 
@@ -191,36 +181,39 @@ void OthelloBoard::UndoLastMove() {
 	//OthelloMove* move;
 	if(GetMoveCount() > 0) {
 		OthelloMove* move = mHistory.back();
+		int flipSize = move->mFlips.size();
 
 		if(move->IsPass()) {
 			mPassCount--;
 		}
 
-		
-		int flipSize = move->mFlips.size();
-		
-		for(int i=0; i<flipSize; i++) {
-			int newR = move->mRow, newC = move->mCol;
-			int numSwitched = move->mFlips.back().switched; 
-			int rd = move->mFlips.back().rowDelta, cd = move->mFlips.back().colDelta;
+		else {
+			for(int i=0; i<flipSize; i++) {
+				int newR = move->mRow, newC = move->mCol;
+				int numSwitched = move->mFlips.back().switched; 
+				int rd = move->mFlips.back().rowDelta, cd = move->mFlips.back().colDelta;
 
-			for(int ii=0; ii<numSwitched; ii++) {
-				//cout << "undoing moved pieces" << endl;
-				mBoard[newR += rd][newC += cd] *= -1;  // flip value by multiplying by -1
+				for(int ii=0; ii<numSwitched; ii++) {
+					//cout << "undoing moved pieces" << endl;
+					mBoard[newR += rd][newC += cd] *= -1;  // flip value by multiplying by -1
+					mValue = mValue + mNextPlayer * 2;
+				}
+
+				move->mFlips.pop_back(); // get rid of last flip 
 			}
 
-			move->mFlips.pop_back(); // get rid of last flip 
+			mBoard[move->mRow][move->mCol] = 0; // set board piece to empty
+			mValue = mValue + mNextPlayer;
+			// first delete from heap and then from vector
 		}
-
-		mBoard[move->mRow][move->mCol] = 0; // set board piece to empty
-
-		// first delete from heap and then from vector
 		delete(mHistory.back());
 		mHistory.pop_back(); // delete move from history
 		mNextPlayer = -mNextPlayer;
 	}
 
 
+
+	/*
 	// update mValue 
 	mValue = 0; // update the value of the board
 	for(int row =0; row<BOARD_SIZE; row++) {
@@ -228,4 +221,5 @@ void OthelloBoard::UndoLastMove() {
 			mValue = mValue + mBoard[row][col];
 		}
 	}
+	*/
 };
