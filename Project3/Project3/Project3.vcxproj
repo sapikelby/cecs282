@@ -88,6 +88,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="OthelloBoard.cpp" />
+    <ClCompile Include="OthelloMove.cpp" />
+    <ClCompile Include="OthelloView.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

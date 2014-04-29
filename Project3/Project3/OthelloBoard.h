@@ -7,7 +7,7 @@
 #include "GameMove.h"
 
 const int BOARD_SIZE = 8;
-
+const int MIDDLE = 3;
 /*
 An OthelloBoard encapsulates data needed to represent a single game of Othello.
 This includes the state of the board, tracking the current player, and keeping
