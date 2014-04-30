@@ -221,19 +221,6 @@ int main(int argc, char* argv[]) {
 		vector<GameMove *> possMoves; 
 		vector<string> possStrings;
 
-
-		//cout << *v << endl;
-
-		/*
-		// Initialization
-		OthelloBoard board; // the state of the game board
-		OthelloView v(&board); // a View for outputting the board via operator<<
-		string userInput; // a string to hold the user's command choice
-		vector<OthelloMove *> possMoves; // a holder for possible moves
-		string temp;
-		vector<string> possStrings;
-		*/
-
 		// Main loop
 		do {
 
@@ -281,7 +268,7 @@ int main(int argc, char* argv[]) {
 					istringstream moveInput(userInput);
 
 					moveInput >> temp >> temp;
-					OthelloMove *move = (OthelloMove*)board->CreateMove();
+					TicTacToeMove *move = (TicTacToeMove*)board->CreateMove();
 					*move = temp;  // overloading =
 
 
@@ -345,7 +332,9 @@ int main(int argc, char* argv[]) {
 
 					for (vector<GameMove*>::const_reverse_iterator itr = 
 						history->rbegin(); itr != history->rend(); itr++) {
-							cout << (player == 1 ? "Black's turn: ":"White's turn: ") 
+							//cout << (player == 1 ? "Black's turn: ":"White's turn: ") 
+							//	<< string(**itr) << endl;
+							cout << board->GetPlayerString(player) << "'s turn:" 
 								<< string(**itr) << endl;
 							player = -player;
 					}
@@ -363,7 +352,7 @@ int main(int argc, char* argv[]) {
 			}
 
 			catch (GameException &exc) {
-				cout << "Throwing exception" << endl;
+				//cout << "Throwing exception" << endl;
 				cout << exc.GetMessage() << endl;
 			}
 
@@ -383,7 +372,7 @@ int main(int argc, char* argv[]) {
 		} while (!board->IsFinished());
 
 		cout << ((board->GetValue() == 0) ? "Tied game" : 
-			(board->GetValue() > 0) ? "Black wins!" : "White wins!") << endl;
+			(board->GetValue() > 0) ? "X wins!" : "O wins!") << endl;
 
 	}
 
