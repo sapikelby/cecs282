@@ -56,7 +56,7 @@ public:
       std::cout << "operator delete: " << mOutstanding << " moves oustanding" << std::endl;
       ::operator delete(ptr);
    }*/
-   virtual ~OthelloMove() {}
+   virtual ~OthelloMove() {};
 
    OthelloMove(const OthelloMove &);
    OthelloMove& operator=(const OthelloMove &rhs);

@@ -10,5 +10,8 @@ private:
 
 public:
    OthelloView(GameBoard *b) : mOthelloBoard((OthelloBoard*)b) {}
+
+   // Destructor
+   //virtual ~OthelloView();
 };
 #endif

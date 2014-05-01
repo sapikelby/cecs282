@@ -3,7 +3,7 @@
 // ----------- CECS 282
 
 #include "GameBoard.h"
-#include "OthelloBoard.h";
+#include "OthelloBoard.h"
 #include "TicTacToeBoard.h"
 #include "GameView.h"
 #include "OthelloView.h"
@@ -25,8 +25,11 @@ int main(int argc, char* argv[]) {
 
 	//map <string, char> list;
 
-	GameBoard *board;
+	GameBoard *board; 
+	//GameBoard *board2 = new GameBoard();  // can't instantiate an abstract class
 	GameView *v;
+	GameMove *move;
+
 	char choice;
 	cout << "-- Othello or Tic Tac Toe --" << endl;
 	cout << "What game do you want to play? \n1) Othello \n2) Tic Tac Toe" 
@@ -34,20 +37,36 @@ int main(int argc, char* argv[]) {
 	cin >> choice;
 	cin.ignore();
 
+
+	string userInput = "";
+	string temp;
+	vector<GameMove *> possMoves; 
+	vector<string> possStrings;
+	
+	//OthelloMove *move;
+	//TicTacToeMove *move;
+
 	if (choice == '1') {
-		
+		cout << "Othello " << endl;
 		board = new OthelloBoard();
 		v = new OthelloView(board);
-		string userInput = "";
-		string temp;
-		vector<GameMove *> possMoves; 
-		vector<string> possStrings;
+		move = (OthelloMove*)board->CreateMove();
+		//OthelloMove *move = (OthelloMove*)board->CreateMove();
+		//OthelloBoard *tempBoard = (OthelloBoard*)board;
+	}
 
+	else {
+		cout << "Tic Tac Toe" << endl;
+
+		board = new TicTacToeBoard();
+		v = new TicTacToeView(board);
+		move = (TicTacToeMove*)board->CreateMove();
+		//TicTacToeMove *move = (TicTacToeMove*)board->CreateMove();
+		//TicTacToeBoard *tempBoard = (TicTacToeBoard*)board;
+
+	}
 
 		//cout << *v << endl;
-
-
-		cout << "--- Othello Game ---" << endl << endl;
 		/*
 		// Initialization
 		OthelloBoard board; // the state of the game board
@@ -76,7 +95,7 @@ int main(int argc, char* argv[]) {
 				possStrings.push_back(string(*itr));  // pushes string rep. of move onto string vector
 			}
 
-			cout << endl << endl;
+			cout << endl;
 
 			sort(possStrings.begin(), possStrings.end());
 
@@ -105,9 +124,25 @@ int main(int argc, char* argv[]) {
 					istringstream moveInput(userInput);
 
 					moveInput >> temp >> temp;
-					OthelloMove *move = (OthelloMove*)board->CreateMove();
-					*move = temp;  // overloading =
+					//if(choice = '1') {
+					//	GameMove *move = (OthelloMove*)board->CreateMove();
+					//}
+					//else {
+					//	GameMove *move = 
+					//}
+					/*
+					if (choice == '1') {
+						OthelloMove *move = (OthelloMove*)board->CreateMove();
+						OthelloBoard *tempBoard = (OthelloBoard*)board;
+					}
+					else {
+						TicTacToeMove *move = (TicTacToeMove*)board->CreateMove();
+						TicTacToeBoard *tempBoard = (TicTacToeBoard*)board;
+					}
 
+					*/
+
+					*move = temp;  // overloading =
 
 					char tempChar; // comma and parantheses in move
 
@@ -116,30 +151,30 @@ int main(int argc, char* argv[]) {
 					getMove >> tempChar >> row >> tempChar >> col >> tempChar;
 
 					try {
-						bool yes = true;
-						if (yes/*OthelloBoard)board->InBounds(row, col) || move->IsPass()*/) {
-							for (GameMove* i : possMoves) { //"for each int called 'i' inside intList, do this"
-								cout << (string)*i << " ";
-								if (move->Equals(*i)) {
-									board->ApplyMove(move);
-									validMove = true;
-									//cout << "Valid move" << endl;
-								}
+						//bool yes = true;
+						//if (tempBoard->InBounds(row, col) || move->IsPass()) {
+						for (GameMove* i : possMoves) { //"for each int called 'i' inside intList, do this"
+							//cout << (string)*i << " ";
+							if (move->Equals(*i)) {
+								board->ApplyMove(move);
+								validMove = true;
+								//cout << "Valid move" << endl;
 							}
-
-							if(!validMove) {
-								throw exc;
-							}
-
 						}
-						else {
-							throw exc; 
+
+						if(!validMove) {
+							throw exc;
 						}
+
+						//}
+						//else {
+						//	throw exc; 
+						//}
 					}
 
 					catch (GameException &exc) {
 						cout << exc.GetMessage() << endl << endl;
-						delete(move); // delete invalid move
+						//delete(move); // delete invalid move
 					}
 				}
 
@@ -202,27 +237,25 @@ int main(int argc, char* argv[]) {
 			possMoves.clear();
 			possStrings.clear();
 
-			//cin.clear();
-			//cin.ignore(INT_MAX,'\n'); 
-
 		} while (!board->IsFinished());
 
+		string winner = ((board->GetValue() > 0) ? board->GetPlayerString(1) : 
+			board->GetPlayerString(-1));
 		cout << ((board->GetValue() == 0) ? "Tied game" : 
-			(board->GetValue() > 0) ? "Black wins!" : "White wins!") << endl;
+			(board->GetValue() > 0) ? winner +  " wins" : winner + " wins") <<  endl;
+
+
+		delete v;
+		delete board;
+		delete move;
+
 		
-	}
-
-	else {
-		cout << "Tic Tac Toe" << endl;
-
-		board = new TicTacToeBoard();
-		v = new TicTacToeView(board);
-		string userInput = "";
-		string temp;
-		vector<GameMove *> possMoves; 
-		vector<string> possStrings;
 		
+	//}
 
+	
+		
+	/*
 		// Main loop
 		do {
 
@@ -282,7 +315,7 @@ int main(int argc, char* argv[]) {
 
 					try {
 						bool yes = true;
-						if (yes/*OthelloBoard)board->InBounds(row, col) || move->IsPass()*/) {
+						if (yes/*OthelloBoard)board->InBounds(row, col) || move->IsPass()) {
 							for (GameMove* i : possMoves) { //"for each int called 'i' inside intList, do this"
 								cout << (string)*i << " ";
 								if(move->Equals(*i)) {
@@ -377,6 +410,7 @@ int main(int argc, char* argv[]) {
 			(board->GetValue() > 0) ? "X wins!" : "O wins!") << endl;
 
 	}
+	*/
 
-	return 0;
+	//return 0;
 };

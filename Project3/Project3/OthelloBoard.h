@@ -21,6 +21,9 @@ public:
    // Default constructor initializes the board to its starting "new game" state
 	OthelloBoard();
 
+	// Destructor
+	virtual ~OthelloBoard() {};
+
    /* 
    Fills in a vector with all possible moves on the current board state for
    the current player. The moves should be ordered based first on row, then on
