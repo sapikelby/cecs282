@@ -120,9 +120,10 @@ int main(int argc, char* argv[]) {
 						if (yes/*OthelloBoard)board->InBounds(row, col) || move->IsPass()*/) {
 							for (GameMove* i : possMoves) { //"for each int called 'i' inside intList, do this"
 								cout << (string)*i << " ";
-								if(*i == *move) {
+								if (move->Equals(*i)) {
 									board->ApplyMove(move);
 									validMove = true;
+									//cout << "Valid move" << endl;
 								}
 							}
 
@@ -220,6 +221,7 @@ int main(int argc, char* argv[]) {
 		string temp;
 		vector<GameMove *> possMoves; 
 		vector<string> possStrings;
+		
 
 		// Main loop
 		do {
@@ -283,7 +285,7 @@ int main(int argc, char* argv[]) {
 						if (yes/*OthelloBoard)board->InBounds(row, col) || move->IsPass()*/) {
 							for (GameMove* i : possMoves) { //"for each int called 'i' inside intList, do this"
 								cout << (string)*i << " ";
-								if(*i == *move) {
+								if(move->Equals(*i)) {
 									board->ApplyMove(move);
 									validMove = true;
 								}
@@ -365,11 +367,11 @@ int main(int argc, char* argv[]) {
 
 			possMoves.clear();
 			possStrings.clear();
-
+			
 			//cin.clear();
 			//cin.ignore(INT_MAX,'\n'); 
 
-		} while (!board->IsFinished());
+		} while (board->GetMoveCount() != 9 || board->GetValue() != 0);
 
 		cout << ((board->GetValue() == 0) ? "Tied game" : 
 			(board->GetValue() > 0) ? "X wins!" : "O wins!") << endl;
