@@ -10,8 +10,6 @@ public:
    */
    virtual void PrintBoard(std::ostream &s) const = 0;
 
-   //virtual ~GameView();
-
    /*
    Helper method for doing operator<< on derived GameView types. This method
    will be called any time you use << to output a GameView object; the 

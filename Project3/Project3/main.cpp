@@ -124,12 +124,16 @@ int main(int argc, char* argv[]) {
 					istringstream moveInput(userInput);
 
 					moveInput >> temp >> temp;
-					//if(choice = '1') {
-					//	GameMove *move = (OthelloMove*)board->CreateMove();
-					//}
-					//else {
-					//	GameMove *move = 
-					//}
+
+					
+
+					if(choice == 1) { // update pointer if choice is other than 1
+						move = (OthelloMove*)board->CreateMove();
+					}
+					else {
+						move = (TicTacToeMove*)board->CreateMove();
+					}
+					
 					/*
 					if (choice == '1') {
 						OthelloMove *move = (OthelloMove*)board->CreateMove();
@@ -155,6 +159,8 @@ int main(int argc, char* argv[]) {
 						//if (tempBoard->InBounds(row, col) || move->IsPass()) {
 						for (GameMove* i : possMoves) { //"for each int called 'i' inside intList, do this"
 							//cout << (string)*i << " ";
+
+							// check and apply move if allowed move
 							if (move->Equals(*i)) {
 								board->ApplyMove(move);
 								validMove = true;
@@ -174,7 +180,7 @@ int main(int argc, char* argv[]) {
 
 					catch (GameException &exc) {
 						cout << exc.GetMessage() << endl << endl;
-						//delete(move); // delete invalid move
+						delete(move); // delete invalid move from heap
 					}
 				}
 
@@ -202,11 +208,12 @@ int main(int argc, char* argv[]) {
 				else if (userInput.find("showHistory") != string::npos) {
 					const vector<GameMove*> *history = board->GetMoveHistory();
 					int player = -board->GetNextPlayer();
-
+					
 					for (vector<GameMove*>::const_reverse_iterator itr = 
 						history->rbegin(); itr != history->rend(); itr++) {
-							cout << (player == 1 ? "Black's turn: ":"White's turn: ") 
-								<< string(**itr) << endl;
+							string plyrStr = ((player == 1) ? board->GetPlayerString(1): 
+								board->GetPlayerString(-1));
+							cout << plyrStr << " " << string(**itr) << endl;
 							player = -player;
 					}
 
@@ -237,12 +244,18 @@ int main(int argc, char* argv[]) {
 			possMoves.clear();
 			possStrings.clear();
 
+			 //display board for the last time if game over
+			if(board->IsFinished()) {
+				cout << *v << endl;
+			}
+
 		} while (!board->IsFinished());
 
 		string winner = ((board->GetValue() > 0) ? board->GetPlayerString(1) : 
 			board->GetPlayerString(-1));
 		cout << ((board->GetValue() == 0) ? "Tied game" : 
-			(board->GetValue() > 0) ? winner +  " wins" : winner + " wins") <<  endl;
+			(board->GetValue() > 0) ? winner +  " wins" : winner + " wins") 
+			<<  endl;
 
 
 		delete v;

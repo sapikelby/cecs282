@@ -7,7 +7,7 @@
 using namespace std;
 
 TicTacToeBoard::TicTacToeBoard() { 
-	cout << "initializing tic tac toe board" << endl;
+	
 	for (int i=0; i<BOARD2_SIZE; i++) {
 		for(int j=0; j<BOARD2_SIZE; j++) {
 			mBoard[i][j] = 0;
@@ -44,9 +44,37 @@ void TicTacToeBoard::GetPossibleMoves(std::vector<GameMove *> *list) const {
 
 void TicTacToeBoard::GetWinner() {
 	
-	char player = (mNextPlayer == 1) ? 1 : -1;  
-	int count = 0;
+	for(int i=0; i<BOARD2_SIZE; i++)
+	{
+		// checking horizontals
+		if (mBoard[i][0] == mBoard[i][1] && mBoard[i][0] == mBoard[i][BOARD_EDGE] && 
+			mBoard[i][0] != 0) {
+				mValue = mBoard[i][0];
+		}
+
+		// checking vertical
+		if (mBoard[0][i] == mBoard[1][i] && mBoard[0][i] == mBoard[BOARD_EDGE][i] && 
+			mBoard[0][i] != 0) {
+				mValue = mBoard[0][i];
+		}
+
+	}
+
+	// check diagonals
+	if (mBoard[0][0] == mBoard[1][1] && mBoard[0][0] == mBoard[BOARD_EDGE][BOARD_EDGE] && 
+		mBoard[0][0] != 0) {
+		mValue = mBoard[0][0];
+	}
+
+	if (mBoard[BOARD_EDGE][0] == mBoard[1][1] && mBoard[BOARD_EDGE][0] == mBoard[0][BOARD_EDGE] && 
+		mBoard[BOARD_EDGE][0] != 0) {
+		mValue = mBoard[BOARD_EDGE][0];
+	}
+	
 	// checking whole board
+
+
+	/*
 	for(int row = 0; row<BOARD2_SIZE; row++) {
 		for(int col = 0; col<BOARD2_SIZE; col++) {
 			bool foundPiece = true;
@@ -69,6 +97,31 @@ void TicTacToeBoard::GetWinner() {
 								cout << "Found same piece " << GetPlayerString(player) << endl;
 								cout << "(" << newR << "," << newC << ")" << endl;
 								cout << endl;
+								
+								while(foundPiece && InBounds(newR, newC)) {
+									cout << "inside second while" << endl;
+									if(mBoard[newR][newC+1] == player) {
+										count++; // hor Count
+										newC += 1;
+									}
+									if (mBoard[newR+1][newC] == player) {
+										count++;
+										newR += 1;
+									}
+									if(mBoard[newR+1][newC+1] = player) {
+										count++;
+										newR += 1;
+										newC += 1;
+									}
+
+									if(count == 0) {
+										foundPiece = false;
+									}
+
+									
+
+								}
+								
 								if (count == 3)
 								{
 									cout << "updating mValue" << endl;
@@ -84,13 +137,14 @@ void TicTacToeBoard::GetWinner() {
 								//eCount++;
 								//count = 0;
 								cout << "Found opposite piece" << endl;
-
+								cout << mBoard[newR][newC] << endl;
 								if (count == 3)
 								{
 									cout << "updating mValue" << endl;
 									mValue = player;
 								}
 
+								count = 0;
 								foundPiece = false;
 								//break;
 							}
@@ -105,6 +159,7 @@ void TicTacToeBoard::GetWinner() {
 									mValue = player;
 								}
 								//else count = 0;
+								count = 0;
 								foundPiece = false;
 								//break;
 							}
@@ -113,13 +168,13 @@ void TicTacToeBoard::GetWinner() {
 
 						}
 
-						
+						cout << "out of while" << endl;
 					}
 				}
 			//}
 		}
 	}
-
+	*/
 	//char player = (mNextPlayer == 1) ? 1 : -1;
 
 	/*
@@ -272,10 +327,10 @@ void TicTacToeBoard::ApplyMove(GameMove *move) {
 	// mValue  -- updated
 	// mNextPlayer -- updated
 
-	char player = (mNextPlayer == 1) ? 1 : -1;
+	
 	TicTacToeMove *m = (TicTacToeMove*)move;  
 		
-	mBoard[m->mRow][m->mCol] = player;
+	mBoard[m->mRow][m->mCol] = mNextPlayer;
 
 	// add move to mHistory
 	mHistory.push_back(m);
