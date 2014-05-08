@@ -6,8 +6,6 @@ using namespace std;
 
 int TicTacToeMove::mOutstanding = 0;
 
-//OthelloMove::~OthelloMove() {}
-
 TicTacToeMove::TicTacToeMove() : mRow(0), mCol(0) {
 };
 
