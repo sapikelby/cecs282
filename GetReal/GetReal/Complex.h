@@ -21,7 +21,7 @@ public:
 	double AbsoluteValue() const;
 	bool isEquals(const Complex &other) const; 
 	std::string ToString() const;
-	Complex Conjugate() const;
+	Complex GetConjugate() const;
 	Complex Multiply(const Complex &other) const;
 
 };

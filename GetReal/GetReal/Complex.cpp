@@ -9,7 +9,7 @@ Complex::Complex() : real(0), imaginary(0) {
 Complex::Complex(double r, double i) :  real(r), imaginary(i) {
 }
 
-// accessor and mutators
+// accessor and mutators //
 double Complex::GetReal() const {
 	return real;
 }
@@ -28,6 +28,7 @@ void Complex::SetImaginary(double i) {
 
 // methods
 double Complex::AbsoluteValue() const {
+
 	return (sqrt(real * real + imaginary * imaginary));
 }
 bool Complex::isEquals(const Complex &other) const {
@@ -40,7 +41,7 @@ std::string Complex::ToString() const {
 	format << real << sign << imaginary << "i";
 	return format.str();
 }
-Complex Complex::Conjugate() const {
+Complex Complex::GetConjugate() const {
 	return Complex(real, -1 * imaginary);
 }
 
